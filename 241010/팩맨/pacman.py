@@ -71,11 +71,14 @@ def pack_move(info,board,pack,t):
     re.sort(key=lambda x:-x[0])
     #print(re)
     info=re[0][4]
+    new_info=[]
     for i in range(len(info)):
-        if info[i].dead and board[info[i].pos[0]][info[i].pos[1]]==0:
+        if info[i].dead:
             board[info[i].pos[0]][info[i].pos[1]]=t
+        elif not info[i].dead:
+            new_info.append(info[i])
     pack=[re[0][2],re[0][3]]
-    return info,board,pack
+    return new_info,board,pack
 
 
 
@@ -83,7 +86,7 @@ def pack_move(info,board,pack,t):
 def siche(board,t):
     for i in range(4):
         for j in range(4):
-            if board[i][j]!=0 and board[i][j]+2==t:
+            if board[i][j]!=0 and (board[i][j]+2)==t:
                 board[i][j]=0
     return board
 
@@ -93,12 +96,6 @@ for k in range(1,t+1):
     info,board,pack=pack_move(info,board,pack,k)
     board=siche(board,k)
     info.extend(egg)
-
-    new_info=[]
-    for i in range(len(info)):
-        if not info[i].dead:
-            new_info.append(info[i])
-    info=new_info
 
     '''for i in range(4):
         print(*board[i])
