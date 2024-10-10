@@ -62,6 +62,7 @@ def move(board,team):
         else:
             board[team[i].tail[j][0]][team[i].tail[j][1]] = 3
             board[team[i].tail[-1][0]][team[i].tail[-1][1]]=4
+        board[new_y][new_x] = 1
         team[i].tail=new_tail
 
     return board,team
@@ -76,28 +77,27 @@ def throw(round,r,board):
             if board[j][r]!=4 and board[j][r]!=0:
                 return j,r
     elif round==2:
-
         for j in range(n)[::-1]:
-            if board[r][j]!=4 and board[r][j]!=0:
-                return r,j
+            if board[(n-1)-r][j]!=4 and board[(n-1)-r][j]!=0:
+                return (n-1)-r,j
     elif round==3:
         for i in range(n):
-            if board[i][r]!=4 and board[i][r]!=0:
-                return i,r
+            if board[i][(n-1)-r]!=4 and board[i][(n-1)-r]!=0:
+                return i,(n-1)-r
     return -1,-1
 team=find_tail(team)
 answer=0
 for i in range(k):
     board,team=move(board,team)
-    if i<n:
+    if i%(4*n)<n:
         round=0
-    elif i<2*n:
+    elif i%(4*n)<2*n:
         round=1
-    elif i<3*n:
+    elif i%(4*n)<3*n:
         round=2
-    elif i<4*n:
+    elif i%(4*n)<4*n:
         round=3
-    y,x=throw(round,i-(n*round),board)
+    y,x=throw(round,(i%(4*n))-(n*round),board)
     #print(y,x)
     if y!=-1 and x!=-1:
         for j in range(len(team)):
@@ -113,17 +113,37 @@ for i in range(k):
                 break
     '''for v in range(n):
         print(*board[v])
-    print(answer,round,i-((n-1)*round))
+    print(answer,round,(i%(4*n))-((n)*round))
     print("*"*20)'''
 print(answer)
 
 '''
-7 3 5
-3 2 1 0 0 0 0
-4 0 4 0 2 1 4
-4 4 4 0 2 0 4
-0 0 0 0 3 4 4
-2 1 3 2 0 0 0
-2 0 0 2 0 0 0
-2 2 2 2 0 0 0
+3 1 7
+0 0 0
+0 3 1
+0 2 2
+
+1 2
+3 2
+
+2 2  2 2
+1 3  3 1  +4
+
+3 2  1 2
+1 2  3 2 +1
+
+2 2
+1 3
+
+2 3  2 1
+2 1  2 3 +4
+
+2 2  2 2
+3 1  1 3 +1 
+
+2 3
+2 1
+
+
+
 '''
