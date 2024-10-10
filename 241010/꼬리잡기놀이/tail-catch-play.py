@@ -50,7 +50,7 @@ def move(board,team):
         for j in range(4):
             new_y=sy+dy[j]
             new_x=sx+dx[j]
-            if 0<=new_y<n and 0<=new_x<n and board[new_y][new_x]==4:
+            if 0<=new_y<n and 0<=new_x<n and (board[new_y][new_x]==4 or board[new_y][new_x]==3):
                 break
         team[i].head=[new_y,new_x]
         new_tail=[[new_y,new_x]]
