@@ -96,9 +96,9 @@ def move_sulre(sulre,now):
     new_y=sulre.pos[0]+dy[sulre.arrow]
     new_x=sulre.pos[1]+dx[sulre.arrow]
     if new_y==0 and new_x==0:
-        now=copy.deepcopy(move_board)
+        now=move_board
     elif new_y==n//2 and new_x==n//2:
-        now=copy.deepcopy(move_board_2)
+        now=move_board_2
     sulre.pos=[new_y,new_x]
     sulre.arrow=now[new_y][new_x]
 
@@ -120,7 +120,7 @@ def catch(board,info,sulre):
     return cnt
 
 answer=0
-now=copy.deepcopy(move_board_2)
+now=move_board_2
 for i in range(k):
     info=move(info,sulre)
     #print(info[0].pos)
