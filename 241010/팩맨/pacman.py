@@ -53,6 +53,7 @@ def pack_move(info,board,pack,t):
         y,x=path[-1][0],path[-1][1]
         for i in range(4):
             new_path=copy.deepcopy(path)
+            new_eat=copy.deepcopy(eat)
             new_y=y+dy[i]
             new_x=x+dx[i]
             if new_x<0 or new_x>=4 or new_y<0 or new_y>=4 or [new_y,new_x] in new_path :
@@ -61,11 +62,11 @@ def pack_move(info,board,pack,t):
             for j in range(len(info)):
                 if not info[j].dead:
                     if info[j].pos==[new_y,new_x]:
-                        eat+=1
+                        new_eat+=1
             if len(new_path)==4:
-                re.append([new_path,eat])
+                re.append([new_path,new_eat])
             else:
-                q.append([new_path,eat])
+                q.append([new_path,new_eat])
     re.sort(key=lambda x:-x[1])
     final=re[0][0]
     for i in range(len(info)):
@@ -97,4 +98,23 @@ for k in range(1,t+1):
         if not info[i].dead:
             new_info.append(info[i])
     info=new_info
+
+    '''for i in range(4):
+        print(*board[i])
+    print(pack)
+    print("*"*20)'''
 print(len(info))
+
+'''
+0 0 0 0
+0 2 1 0
+0 0 0 0
+0 0 1 0
+
+0 1 0 0
+0 2 0 0
+0 0 0 0
+0 0 0 1
+
+
+'''
