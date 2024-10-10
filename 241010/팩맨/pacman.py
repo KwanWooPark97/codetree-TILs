@@ -45,34 +45,35 @@ def pack_move(info,board,pack,t):
     dx=[0,-1,0,1]
     dy=[-1,0,1,0]
     q=deque()
-    q.append([0,[],pack[0],pack[1]])
+    q.append([0,[],pack[0],pack[1],info])
     #print(q[-1])
     re=[]
     while q:
-        eat,path,y,x=q.popleft()
+        eat,path,y,x,infor=q.popleft()
         for i in range(4):
+            new_info=copy.deepcopy(infor)
             new_path=copy.deepcopy(path)
             new_eat=copy.deepcopy(eat)
             new_y=y+dy[i]
             new_x=x+dx[i]
             if new_x<0 or new_x>=4 or new_y<0 or new_y>=4:
                 continue
-            for j in range(len(info)):
-                if not info[j].dead:
-                    if info[j].pos==[new_y,new_x] and [new_y,new_x] not in new_path:
+            for j in range(len(new_info)):
+                if not new_info[j].dead:
+                    if new_info[j].pos==[new_y,new_x]:
                         new_eat+=1
-            new_path.append([new_y,new_x])
+                        new_info[j].dead=True
+            new_path.append(i)
             if len(new_path)==3:
-                re.append([new_eat,new_path,new_y,new_x])
+                re.append([new_eat,new_path,new_y,new_x,new_info])
             else:
-                q.append([new_eat,new_path,new_y,new_x])
+                q.append([new_eat,new_path,new_y,new_x,new_info])
     re.sort(key=lambda x:-x[0])
     #print(re)
-    final=re[0][1]
+    info=re[0][4]
     for i in range(len(info)):
-        if info[i].pos in final:
+        if info[i].dead and board[info[i].pos[0]][info[i].pos[1]]==0:
             board[info[i].pos[0]][info[i].pos[1]]=t
-            info[i].dead=True
     pack=[re[0][2],re[0][3]]
     return info,board,pack
 
