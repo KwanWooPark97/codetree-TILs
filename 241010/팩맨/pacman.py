@@ -84,7 +84,7 @@ def pack_move(info,board,pack,t):
 def siche(board,t):
     for i in range(4):
         for j in range(4):
-            if board[i][j]!=0 and board[i][j]+2==t:
+            if board[i][j]!=0 and board[i][j]+1==t:
                 board[i][j]=0
     return board
 
