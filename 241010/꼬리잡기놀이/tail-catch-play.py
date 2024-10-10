@@ -36,7 +36,8 @@ def find_tail(team):
                         team[i].tail.append([new_y,new_x])
                         q.append([new_y,new_x])
                     elif board[new_y][new_x]==3:
-                        team[i].tail.append([new_y, new_x])
+                        tail=[new_y,new_x]
+        team[i].tail.append(tail)
 
     return team
 
@@ -96,23 +97,33 @@ for i in range(k):
         round=2
     elif i<4*n:
         round=3
-    y,x=throw(round,i-((n)*round),board)
+    y,x=throw(round,i-(n*round),board)
     #print(y,x)
-    if y==-1 and x==-1:
-        continue
-    for j in range(len(team)):
-        if [y,x] in team[j].tail:
-            answer+=(team[j].tail.index([y,x])+1)**2
-            team[j].tail=team[j].tail[::-1]
-            team[j].head=team[j].tail[0]
-            for v in range(len(team[j].tail) - 1):
-                board[team[j].tail[v][0]][team[j].tail[v][1]] = 2
-            else:
-                board[team[j].head[0]][team[j].head[1]]=1
-                board[team[j].tail[-1][0]][team[j].tail[-1][1]] = 3
-            break
-    '''for i in range(n):
-        print(*board[i])
-    print(answer)
+    if y!=-1 and x!=-1:
+        for j in range(len(team)):
+            if [y,x] in team[j].tail:
+                answer+=(team[j].tail.index([y,x])+1)**2
+                team[j].tail=team[j].tail[::-1]
+                team[j].head=team[j].tail[0]
+                for v in range(len(team[j].tail) - 1):
+                    board[team[j].tail[v][0]][team[j].tail[v][1]] = 2
+                else:
+                    board[team[j].head[0]][team[j].head[1]]=1
+                    board[team[j].tail[-1][0]][team[j].tail[-1][1]] = 3
+                break
+    '''for v in range(n):
+        print(*board[v])
+    print(answer,round,i-((n-1)*round))
     print("*"*20)'''
 print(answer)
+
+'''
+7 3 5
+3 2 1 0 0 0 0
+4 0 4 0 2 1 4
+4 4 4 0 2 0 4
+0 0 0 0 3 4 4
+2 1 3 2 0 0 0
+2 0 0 2 0 0 0
+2 2 2 2 0 0 0
+'''
