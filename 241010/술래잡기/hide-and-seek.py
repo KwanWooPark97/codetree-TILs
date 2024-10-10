@@ -1,8 +1,6 @@
-import copy
 from collections import deque
 n,m,h,k=map(int,input().split())
 
-board=[[0]*n for _ in range(n)]
 path=[[0,0]]
 d=[0]
 d_2=[2]
@@ -34,6 +32,7 @@ d.append(2)
 d_2.reverse()
 d_2.append(0)
 board=[[0]*n for _ in range(n)]
+
 for i in range(len(path)):
     y,x=path[i]
     move_board[y][x]=d[i]
@@ -119,45 +118,7 @@ answer=0
 now=move_board_2
 for i in range(k):
     info=move(info,sulre)
-    #print(info[0].pos)
     sulre,now=move_sulre(sulre,now)
-    #print(now[0],dd[0])
     cnt=catch(board,info,sulre)
     answer+=cnt*(i+1)
-    '''ret=copy.deepcopy(board)
-    for j in range(len(info)):
-        ret[info[j].pos[0]][info[j].pos[1]]=2
-    ret[now[0][0]][now[0][1]]=3
-    for j in range(n):
-
-        print(*move_board_2[j])
-    print(sulre.pos)
-    print("*"*20)'''
 print(answer)
-'''
-5 1 1 39
-2 1 1
-3 2
-
-0 0 0 0 0
-2 0 0 0 0
-0 1 3 0 0
-0 0 0 0 0
-0 0 0 0 0
-
-0 0 0 0 0
-0 2 3 0 0
-0 1 0 0 0
-0 0 0 0 0
-0 0 0 0 0
-
-0 0 0 0 0
-0 0 2 3 0
-0 1 0 0 0
-0 0 0 0 0
-0 0 0 0 0
-1 좌우 우 시작
-2 상하 하 시작
-
-
-'''
