@@ -96,7 +96,7 @@ for i in range(k):
         round=2
     elif i<4*n:
         round=3
-    y,x=throw(round,i-((n-1)*round),board)
+    y,x=throw(round,i-((n)*round),board)
     #print(y,x)
     if y==-1 and x==-1:
         continue
