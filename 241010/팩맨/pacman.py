@@ -26,7 +26,7 @@ def monster_move(info,pack):
             d=info[i].d
             new_y=info[i].pos[0]+dy[d]
             new_x=info[i].pos[1]+dx[d]
-            now=d
+            now=copy.deepcopy(d)
             while new_x<0 or new_x>=4 or new_y<0 or new_y>=4 or [new_y,new_x]==pack or board[new_y][new_x]>=1:
                 now=(now+1)%8
                 new_y = info[i].pos[0] + dy[now]
@@ -45,12 +45,11 @@ def pack_move(info,board,pack,t):
     dx=[0,-1,0,1]
     dy=[-1,0,1,0]
     q=deque()
-    q.append([[[pack[0],pack[1]]],0])
+    q.append([0,[],pack[0],pack[1]])
     #print(q[-1])
     re=[]
     while q:
-        path,eat=q.popleft()
-        y,x=path[-1][0],path[-1][1]
+        eat,path,y,x=q.popleft()
         for i in range(4):
             new_path=copy.deepcopy(path)
             new_eat=copy.deepcopy(eat)
@@ -63,19 +62,18 @@ def pack_move(info,board,pack,t):
                     if info[j].pos==[new_y,new_x] and [new_y,new_x] not in new_path:
                         new_eat+=1
             new_path.append([new_y,new_x])
-
-            if len(new_path)==4:
-                re.append([new_path,new_eat])
+            if len(new_path)==3:
+                re.append([new_eat,new_path,new_y,new_x])
             else:
-                q.append([new_path,new_eat])
-    re.sort(key=lambda x:-x[1])
+                q.append([new_eat,new_path,new_y,new_x])
+    re.sort(key=lambda x:-x[0])
     #print(re)
-    final=re[0][0]
+    final=re[0][1]
     for i in range(len(info)):
         if info[i].pos in final:
             board[info[i].pos[0]][info[i].pos[1]]=t
             info[i].dead=True
-    pack=re[0][0][-1]
+    pack=[re[0][2],re[0][3]]
     return info,board,pack
 
 
@@ -84,7 +82,7 @@ def pack_move(info,board,pack,t):
 def siche(board,t):
     for i in range(4):
         for j in range(4):
-            if board[i][j]!=0 and board[i][j]+1==t:
+            if board[i][j]!=0 and board[i][j]+2==t:
                 board[i][j]=0
     return board
 
