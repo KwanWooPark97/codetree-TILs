@@ -7,6 +7,7 @@ d=[0]
 d_2=[2]
 dx=[0,1,0,-1]
 dy=[1,0,-1,0]
+#2 1 2 2 3 3 1 1 1
 for i in range(n*n):
     now_d=d[-1]
     new_x=path[-1][1]+dx[now_d]
@@ -15,12 +16,22 @@ for i in range(n*n):
         now_d=(now_d+1)%4
         new_x = path[-1][1] + dx[now_d]
         new_y = path[-1][0] + dy[now_d]
-    path.append([new_y,new_x])
-    d.append(now_d)
-    d_2.append((now_d+2)%4)
+    path.append([new_y, new_x])
     if new_y==(n//2) and new_x==(n//2):
         break
+    nx=new_x+dx[now_d]
+    ny=new_y+dy[now_d]
+
+    if [ny,nx] in path or nx<0 or ny>=n or nx>=n or ny<0:
+        now_d=(now_d+1)%4
+
+    d.append(now_d)
+    d_2.append((now_d+2)%4)
+
+
+d.append(2)
 d_2.reverse()
+d_2.append(0)
 board=[[0]*n for _ in range(n)]
 path=deque(path)
 d=deque(d)
@@ -68,14 +79,16 @@ def move(now,info):
 def move_sulre(now,dd):
     y,x=now.popleft()
     dd.popleft()
-
     if len(now)==0:
         if y==0 and x==0:
             now=copy.deepcopy(path)
             dd=copy.deepcopy(d)
+
         elif y==n//2 and x==n//2:
             now = copy.deepcopy(path_2)
             dd = copy.deepcopy(d_2)
+        now.popleft()
+        dd.popleft()
     return now,dd
 def catch(board,now,dd,info):
     dx = [0, 1, 0, -1]
@@ -97,8 +110,44 @@ dd=copy.deepcopy(d_2)
 answer=0
 for i in range(k):
     info=move(now,info)
+    #print(info[0].pos)
     now,dd=move_sulre(now,dd)
     #print(now[0],dd[0])
     cnt=catch(board, now, dd, info)
     answer+=cnt*(i+1)
+    '''ret=copy.deepcopy(board)
+    for j in range(len(info)):
+        ret[info[j].pos[0]][info[j].pos[1]]=2
+    ret[now[0][0]][now[0][1]]=3
+    for j in range(n):
+        print(*ret[j])
+
+    print("*"*20)'''
 print(answer)
+'''
+5 1 1 39
+2 1 1
+3 2
+
+0 0 0 0 0
+2 0 0 0 0
+0 1 3 0 0
+0 0 0 0 0
+0 0 0 0 0
+
+0 0 0 0 0
+0 2 3 0 0
+0 1 0 0 0
+0 0 0 0 0
+0 0 0 0 0
+
+0 0 0 0 0
+0 0 2 3 0
+0 1 0 0 0
+0 0 0 0 0
+0 0 0 0 0
+1 좌우 우 시작
+2 상하 하 시작
+
+
+'''
