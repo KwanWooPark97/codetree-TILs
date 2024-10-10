@@ -30,21 +30,17 @@ for i in range(n*n):
     d_2.append((now_d+2)%4)
 move_board=[[0]*n for _ in range(n)]
 move_board_2=[[0]*n for _ in range(n)]
-
-
 d.append(2)
 d_2.reverse()
 d_2.append(0)
 board=[[0]*n for _ in range(n)]
-path=deque(path)
-d=deque(d)
-d_2=deque(d_2)
-path_2=copy.deepcopy(path)
-path_2.reverse()
 for i in range(len(path)):
     y,x=path[i]
     move_board[y][x]=d[i]
-    y,x=path_2[i]
+
+path.reverse()
+for i in range(len(path)):
+    y,x=path[i]
     move_board_2[y][x]=d_2[i]
 
 
