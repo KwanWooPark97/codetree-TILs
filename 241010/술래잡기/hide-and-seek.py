@@ -1,48 +1,25 @@
-from collections import deque
-n,m,h,k=map(int,input().split())
+import copy
 
-path=[[0,0]]
-d=[0]
-d_2=[2]
+n,m,h,k=map(int,input().split())
+move_board=[[-1]*n for _ in range(n)]
+move_board_2=[[-1]*n for _ in range(n)]
+sy,sx=0,0
 dx=[0,1,0,-1]
 dy=[1,0,-1,0]
 #2 1 2 2 3 3 1 1 1
+now_d=0
 for i in range(n*n):
-    now_d=d[-1]
-    new_x=path[-1][1]+dx[now_d]
-    new_y=path[-1][0]+dy[now_d]
-    if [new_y,new_x] in path or new_x<0 or new_y>=n or new_x>=n or new_y<0:
+    new_x=sx+dx[now_d]
+    new_y=sy+dy[now_d]
+    if  new_x<0 or new_y>=n or new_x>=n or new_y<0 or move_board[new_y][new_x]!=-1:
         now_d=(now_d+1)%4
-        new_x = path[-1][1] + dx[now_d]
-        new_y = path[-1][0] + dy[now_d]
-    path.append([new_y, new_x])
+        new_x = sx + dx[now_d]
+        new_y = sy + dy[now_d]
+    move_board[sy][sx]=now_d
+    move_board_2[new_y][new_x]=(now_d+2)%4
     if new_y==(n//2) and new_x==(n//2):
         break
-    nx=new_x+dx[now_d]
-    ny=new_y+dy[now_d]
-
-    if [ny,nx] in path or nx<0 or ny>=n or nx>=n or ny<0:
-        now_d=(now_d+1)%4
-
-    d.append(now_d)
-    d_2.append((now_d+2)%4)
-move_board=[[0]*n for _ in range(n)]
-move_board_2=[[0]*n for _ in range(n)]
-d.append(2)
-d_2.reverse()
-d_2.append(0)
-board=[[0]*n for _ in range(n)]
-
-for i in range(len(path)):
-    y,x=path[i]
-    move_board[y][x]=d[i]
-
-path.reverse()
-for i in range(len(path)):
-    y,x=path[i]
-    move_board_2[y][x]=d_2[i]
-
-
+    sy,sx=new_y,new_x
 
 
 class doduk():
@@ -57,6 +34,7 @@ for i in range(m):
     y,x,dd=map(int,input().split())
     info.append(doduk(y-1,x-1,dd))
 
+board=[[0]*n for _ in range(n)]
 for i in range(h):
     y,x=map(int,input().split())
     board[y-1][x-1]=1
@@ -118,7 +96,10 @@ answer=0
 now=move_board_2
 for i in range(k):
     info=move(info,sulre)
+    
     sulre,now=move_sulre(sulre,now)
+    
     cnt=catch(board,info,sulre)
     answer+=cnt*(i+1)
+   
 print(answer)
