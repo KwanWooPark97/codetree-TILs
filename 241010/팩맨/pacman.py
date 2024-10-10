@@ -58,11 +58,12 @@ def pack_move(info,board,pack,t):
             new_x=x+dx[i]
             if new_x<0 or new_x>=4 or new_y<0 or new_y>=4:
                 continue
-            new_path.append([new_y,new_x])
             for j in range(len(info)):
                 if not info[j].dead:
-                    if info[j].pos==[new_y,new_x]:
+                    if info[j].pos==[new_y,new_x] and [new_y,new_x] not in new_path:
                         new_eat+=1
+            new_path.append([new_y,new_x])
+
             if len(new_path)==4:
                 re.append([new_path,new_eat])
             else:
@@ -109,14 +110,14 @@ print(len(info))
 
 '''
 0 0 0 0
-1,1,1 2 0 0
+0 2 1 0
 0 0 0 0
-0 0 0 0
+0 0 1 0
 
-1 0 0 0
+0 1 0 0
 0 2 0 0
-1,1 0 0 0
 0 0 0 0
+0 0 0 1
 
 
 '''
