@@ -64,7 +64,7 @@ ex=[]
 for x in range(k):
     now,d=move[x]
     board,y,now,ex=drop(board,x+1,d,now-1)
-    if y<=2:
+    if y<=3:
         board=[[0]*c for _ in range(r)]
         continue
     answer+=bfs(board,y,now,ex)
